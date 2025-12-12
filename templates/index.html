@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Proje - Docker Uygulaması</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center">
+                <div class="inline-block mb-4">
+                    <i class="fas fa-docker text-6xl mb-4 pulse-animation"></i>
+                </div>
+                <h1 class="text-5xl font-bold mb-4">Cloud Proje</h1>
+                <p class="text-xl text-purple-100 mb-8">Docker içinde çalışan modern Python uygulaması</p>
+                <div class="flex justify-center space-x-4">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
+                        <i class="fas fa-check-circle mr-2"></i>Docker Ready
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
+                        <i class="fab fa-python mr-2"></i>Python 3.9
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
+                        <i class="fab fa-flask mr-2"></i>Flask
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-12">
+        <!-- Time Card -->
+        <div class="max-w-4xl mx-auto mb-8">
+            <div class="bg-white rounded-2xl shadow-lg p-8 card-hover">
+                <div class="text-center">
+                    <i class="fas fa-clock text-4xl text-purple-600 mb-4"></i>
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Canlı Zaman</h2>
+                    <div id="current-time" class="text-4xl font-bold text-purple-600 mb-2">{{ current_time }}</div>
+                    <div id="current-date" class="text-lg text-gray-600">{{ current_date }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="text-center">
+                    <div class="inline-block bg-blue-100 rounded-full p-4 mb-4">
+                        <i class="fas fa-code text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Modern Tasarım</h3>
+                    <p class="text-gray-600">Tailwind CSS ile oluşturulmuş responsive ve modern arayüz</p>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="text-center">
+                    <div class="inline-block bg-green-100 rounded-full p-4 mb-4">
+                        <i class="fas fa-server text-3xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Docker Container</h3>
+                    <p class="text-gray-600">Kolayca deploy edilebilen containerized uygulama</p>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="text-center">
+                    <div class="inline-block bg-purple-100 rounded-full p-4 mb-4">
+                        <i class="fas fa-rocket text-3xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Hızlı & Güvenilir</h3>
+                    <p class="text-gray-600">Flask framework ile hafif ve performanslı backend</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Section -->
+        <div class="max-w-4xl mx-auto mt-12 mb-8">
+            <div class="bg-white rounded-2xl shadow-lg p-8 card-hover">
+                <div class="text-center mb-6">
+                    <i class="fas fa-gamepad text-5xl text-purple-600 mb-4"></i>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Sayı Tahmin Oyunu</h2>
+                    <p class="text-gray-600">1 ile 100 arasında bir sayı tuttum. Hadi tahmin et!</p>
+                </div>
+
+                <!-- Game Status -->
+                <div id="game-status" class="hidden mb-6 p-4 bg-blue-50 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm text-gray-600">Deneme Sayısı: </span>
+                            <span id="attempt-count" class="font-bold text-blue-600">0</span>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">Aralık: </span>
+                            <span id="range-display" class="font-bold text-blue-600">1-100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Messages -->
+                <div id="game-message" class="mb-6 min-h-[60px] flex items-center justify-center">
+                    <p class="text-gray-400 text-center">Oyuna başlamak için "Yeni Oyun" butonuna tıklayın</p>
+                </div>
+
+                <!-- Game Input -->
+                <div id="game-input-section" class="hidden mb-6">
+                    <div class="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+                        <input 
+                            type="number" 
+                            id="guess-input" 
+                            placeholder="Tahmininizi girin..."
+                            class="flex-1 px-4 py-3 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 text-center text-lg"
+                            min="1"
+                            max="100"
+                        >
+                        <button 
+                            onclick="makeGuess()" 
+                            id="guess-btn"
+                            class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold"
+                        >
+                            Tahmin Et
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Buttons -->
+                <div class="flex justify-center gap-4">
+                    <button 
+                        onclick="startNewGame()" 
+                        id="start-btn"
+                        class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition font-semibold shadow-lg"
+                    >
+                        <i class="fas fa-play mr-2"></i>Yeni Oyun
+                    </button>
+                    <button 
+                        onclick="endGame()" 
+                        id="end-btn"
+                        class="hidden px-8 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition font-semibold"
+                    >
+                        <i class="fas fa-stop mr-2"></i>Bitir
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="max-w-4xl mx-auto mt-12">
+            <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-lg p-8 text-white">
+                <div class="flex items-center justify-between flex-wrap">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Başarıyla Çalışıyor!</h3>
+                        <p class="text-purple-100">Uygulamanız Docker container içinde aktif olarak çalışmaktadır.</p>
+                        <p class="text-purple-100 mt-2">
+                            <i class="fas fa-server mr-2"></i>
+                            Frontend: Port 5000 | Backend: Port 5001
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-green-300 rounded-full animate-pulse"></div>
+                            <span class="font-semibold">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 text-gray-600">
+            <p class="mb-2">Made with <i class="fas fa-heart text-red-500"></i> using Flask & Docker</p>
+            <div class="flex justify-center space-x-4 text-xl">
+                <a href="https://github.com/K4hveci" target="_blank" rel="noopener noreferrer" class="text-purple-600 hover:text-purple-800 transition"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-blue-600 hover:text-blue-800 transition"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-pink-600 hover:text-pink-800 transition"><i class="fab fa-docker"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Backend API URL - Browser'dan erişim için localhost kullanılmalı
+        // (Browser Docker network'ünde değil, bu yüzden container hostname'leri çalışmaz)
+        const API_URL = `http://${window.location.hostname}:5001/api`;
+        let currentGameId = null;
+
+        // Live Time Update
+        function updateTime() {
+            const now = new Date();
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+            
+            document.getElementById('current-time').textContent = 
+                now.toLocaleTimeString('tr-TR', timeOptions);
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('tr-TR', dateOptions);
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Game Functions
+        async function startNewGame() {
+            try {
+                const response = await fetch(`${API_URL}/game/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Oyun başlatılamadı');
+                }
+
+                const data = await response.json();
+                currentGameId = data.game_id;
+
+                // UI Güncellemeleri
+                document.getElementById('game-status').classList.remove('hidden');
+                document.getElementById('game-input-section').classList.remove('hidden');
+                document.getElementById('start-btn').classList.add('hidden');
+                document.getElementById('end-btn').classList.remove('hidden');
+                document.getElementById('guess-input').disabled = false;
+                document.getElementById('guess-input').value = '';
+                document.getElementById('guess-input').focus();
+
+                document.getElementById('game-message').innerHTML = 
+                    `<p class="text-green-600 font-semibold text-lg">${data.message}</p>`;
+                document.getElementById('attempt-count').textContent = '0';
+                document.getElementById('range-display').textContent = 
+                    `${data.range.min}-${data.range.max}`;
+
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Backend bağlantı hatası! Backend container\'ın çalıştığından emin olun.', 'error');
+            }
+        }
+
+        async function makeGuess() {
+            if (!currentGameId) {
+                showMessage('Lütfen önce yeni oyun başlatın!', 'error');
+                return;
+            }
+
+            const guessInput = document.getElementById('guess-input');
+            const guess = parseInt(guessInput.value);
+
+            if (!guess || guess < 1 || guess > 100) {
+                showMessage('Lütfen 1 ile 100 arasında geçerli bir sayı girin!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/game/guess`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        game_id: currentGameId,
+                        guess: guess
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showMessage(data.error || 'Bir hata oluştu!', 'error');
+                    if (data.attempts) {
+                        document.getElementById('attempt-count').textContent = data.attempts;
+                    }
+                    return;
+                }
+
+                // UI Güncellemeleri
+                document.getElementById('attempt-count').textContent = data.attempts;
+                
+                if (data.range) {
+                    document.getElementById('range-display').textContent = 
+                        `${data.range.min}-${data.range.max}`;
+                }
+
+                // Sonuç mesajını göster
+                let messageClass = 'text-blue-600';
+                if (data.result === 'correct') {
+                    messageClass = 'text-green-600 font-bold text-xl';
+                    document.getElementById('guess-input').disabled = true;
+                    document.getElementById('guess-btn').disabled = true;
+                    document.getElementById('end-btn').classList.remove('hidden');
+                } else if (data.result === 'higher') {
+                    messageClass = 'text-orange-600';
+                } else if (data.result === 'lower') {
+                    messageClass = 'text-red-600';
+                }
+
+                document.getElementById('game-message').innerHTML = 
+                    `<p class="${messageClass} font-semibold text-lg">${data.message}</p>`;
+
+                guessInput.value = '';
+                guessInput.focus();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Backend bağlantı hatası!', 'error');
+            }
+        }
+
+        async function endGame() {
+            if (currentGameId) {
+                try {
+                    await fetch(`${API_URL}/game/end/${currentGameId}`, {
+                        method: 'POST'
+                    });
+                } catch (error) {
+                    console.error('Error ending game:', error);
+                }
+            }
+
+            resetGameUI();
+        }
+
+        function resetGameUI() {
+            currentGameId = null;
+            document.getElementById('game-status').classList.add('hidden');
+            document.getElementById('game-input-section').classList.add('hidden');
+            document.getElementById('start-btn').classList.remove('hidden');
+            document.getElementById('end-btn').classList.add('hidden');
+            document.getElementById('guess-input').disabled = false;
+            document.getElementById('guess-btn').disabled = false;
+            document.getElementById('game-message').innerHTML = 
+                '<p class="text-gray-400 text-center">Oyuna başlamak için "Yeni Oyun" butonuna tıklayın</p>';
+        }
+
+        function showMessage(text, type = 'info') {
+            const messageDiv = document.getElementById('game-message');
+            const colorClass = type === 'error' ? 'text-red-600' : 'text-blue-600';
+            messageDiv.innerHTML = `<p class="${colorClass} font-semibold">${text}</p>`;
+        }
+
+        // Enter tuşu ile tahmin yapma
+        document.addEventListener('DOMContentLoaded', function() {
+            const guessInput = document.getElementById('guess-input');
+            if (guessInput) {
+                guessInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        makeGuess();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+

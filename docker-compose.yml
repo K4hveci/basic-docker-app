@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-container
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=development
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    environment:
+      - FLASK_ENV=development
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
