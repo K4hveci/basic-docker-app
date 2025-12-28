@@ -131,3 +131,7 @@ docker-compose logs -f backend
 
 Bu proje eğitim amaçlıdır.
 
+
+Mehmet Efe Ergin 220201024
+Yusuf Berk Baytok 220201023
+Anıl Akpınar 220201013
